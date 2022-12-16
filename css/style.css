@@ -1,0 +1,16 @@
+#library {
+  display: flex;
+  gap: 1rem;
+}
+
+.books {
+  border: 2px solid black;
+  flex: 1;
+}
+
+.form-popup {
+  display: none;
+  position: fixed;
+  border-radius: 5px;
+  background: lightgray;
+}
