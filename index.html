@@ -10,7 +10,7 @@
   </head>
   <body>
     <div id="library"></div>
-    <button class="new-book" onclick="openForm()">NEW BOOK</button>
+    <button class="new-book" id="new-book">Add Book</button>
     <div class="form-popup" id="myForm">
       <form action="./js/script.js" onsubmit="event.preventDefault()" id="form" class="form-container">
         <h1>New Book</h1>
@@ -37,7 +37,7 @@
         </div>
 
         <div>
-          <button type="submit" id="submit" onclick="closeForm()">Submit</button>
+          <button type="submit" id="add-book">Submit</button>
         </div>
       </form>
     </div>

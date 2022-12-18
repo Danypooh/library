@@ -20,17 +20,21 @@ function Book(title, author, pages, read) {
   };
 }
 
-function openForm() {
+//Arrow function to display the form
+let newBook = document.getElementById("new-book");
+newBook.addEventListener("click", () => {
   document.getElementById("myForm").style.display = "block";
-}
+});
 
-function closeForm() {
+//Arrow function to hide the form and call addBookToLibrary()
+let addBook = document.getElementById("add-book");
+addBook.addEventListener("click", () => {
   document.getElementById("myForm").style.display = "none";
   addBookToLibrary();
-}
+});
 
 function addBookToLibrary() {
-  //Creates new Book, make a push to myLibrary
+  //Creates new Book, make a push to myLibrary and call displayLibraryInHTML()
   let book = new Book(title, author, pages, read);
   myLibrary.push(book);
   bookIndex = myLibrary.length - 1;
@@ -39,6 +43,7 @@ function addBookToLibrary() {
 }
 
 function displayLibraryInHTML() {
+  //Displays library in HTML and call addRemoveButtonEvent
   myLibrary.forEach((book) => {
     if (book.inLibrary !== true) {
       let newBook = createBookMarkup(book);
@@ -65,12 +70,14 @@ function createBookMarkup(book) {
 }
 
 function removeBook(indexOfBook) {
-  const library = document.getElementById("library");
-  library.removeChild(library.children[indexOfBook]);
+  let library = document.getElementById("library");
+  while (library.firstChild) {
+    library.removeChild(library.firstChild);
+  }
   myLibrary.splice(indexOfBook, 1);
-  updateBooksIndex();
-}
-
-function updateBooksIndex() {
-  myLibrary.forEach((element) => {});
+  myLibrary.forEach((book, bookIndex) => {
+    book.index = bookIndex;
+    book.inLibrary = false;
+  });
+  displayLibraryInHTML();
 }
