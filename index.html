@@ -12,7 +12,7 @@
     <div id="library"></div>
     <button class="new-book" onclick="openForm()">NEW BOOK</button>
     <div class="form-popup" id="myForm">
-      <form action="" onsubmit="event.preventDefault()" class="form-container">
+      <form action="./js/script.js" onsubmit="event.preventDefault()" id="form" class="form-container">
         <h1>New Book</h1>
 
           <div>
@@ -33,7 +33,7 @@
 
         <div>
           <label for="read">Have you read it?</label>
-          <input type="checkbox" name="read" id="read" />
+          <input type="checkbox" name="read" id="read" value="yes"/>
         </div>
 
         <div>

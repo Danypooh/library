@@ -3,10 +3,10 @@ let bookIndex = 0; //Global variable to differentiate books in library by index
 
 function Book(title, author, pages, read) {
   //Book object constructor
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+  this.title = form.title.value;
+  this.author = form.author.value;
+  this.pages = form.pages.value + "pg";
+  this.read = form.read.value;
   this.info = function () {
     return (
       this.title +
@@ -26,44 +26,51 @@ function openForm() {
 
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
-  setBookAttributes();
+  addBookToLibrary();
 }
 
-function setBookAttributes() {
-  //Creates new book with form values as it's corresponding properties
-  //Then calls function to add the new book to the library
-  let oForm = document.forms[0];
-  let book = new Book();
-  book.author = oForm.elements["author"].value;
-  book.title = oForm.elements["title"].value;
-  book.pages = oForm.elements["pages"].value;
-  book.read = oForm.elements["read"].value;
-  addBookToLibrary(book);
-}
-
-function addBookToLibrary(book) {
-  //Pushes new book to myLibrary and adds it to the HTML
+function addBookToLibrary() {
+  //Creates new Book, make a push to myLibrary
+  let book = new Book(title, author, pages, read);
   myLibrary.push(book);
-  myLibrary.forEach((element) => {
-    if (element.inLibrary !== true) {
-      let newBook = createBookMarkup(element);
+  bookIndex = myLibrary.length - 1;
+  book.index = bookIndex; //Adds propertie to know the book index in myLibrary
+  displayLibraryInHTML();
+}
+
+function displayLibraryInHTML() {
+  myLibrary.forEach((book) => {
+    if (book.inLibrary !== true) {
+      let newBook = createBookMarkup(book);
       document //Inserts the newBook in the HTML
         .getElementById("library")
         .insertAdjacentHTML("beforeend", newBook);
-      element.inLibrary = true; //Adds propertie to know that the book is now in myLibrary
-      element.index = bookIndex; //Adds propertie to know the book index in myLibrary
-      bookIndex++;
+      book.inLibrary = true; //Adds propertie to know that the book is now in myLibrary
     }
   });
 }
 
-function createBookMarkup(newBook) {
+function createBookMarkup(book) {
   //Creates the HTML structure for each new Book
-  let markup = `<div class="books"> ${newBook.info()} </div>
-                <div class="buttons>
-                  <button type="submit" class="remove-button" onclick="removeBook()">Remove</button>
+  let markup = `<div class="books">
+                  <div class="book-info"> ${book.info()} </div>
+                  <div class="buttons">
+                    <button type="submit" class="remove-button" onclick="removeBook(${
+                      book.index
+                    })">Remove</button>
+                    <button type="submit" class="read-button">Read</button>
+                  </div>
                 </div>`;
   return markup;
 }
 
-function removeBook() {}
+function removeBook(indexOfBook) {
+  const library = document.getElementById("library");
+  library.removeChild(library.children[indexOfBook]);
+  myLibrary.splice(indexOfBook, 1);
+  updateBooksIndex();
+}
+
+function updateBooksIndex() {
+  myLibrary.forEach((element) => {});
+}
