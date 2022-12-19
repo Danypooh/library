@@ -4,32 +4,23 @@ let bookIndex = 0; //Global variable to differentiate books in library by index
 function Book(title, author, pages, read) {
   //Book object constructor
   this.title = form.title.value;
-  this.author = form.author.value;
-  this.pages = form.pages.value + "pg";
+  this.author = "by " + form.author.value;
+  this.pages = form.pages.value + " pages";
   this.read = form.read.checked;
-  this.info = function () {
-    return (
-      this.title +
-      " by " +
-      this.author +
-      ", " +
-      this.pages +
-      " pages, " +
-      (this.read === "read" ? this.read : " not read yet")
-    );
-  };
 }
 
 //Arrow function to display the form
-const newBook = document.getElementById("new-book");
-newBook.addEventListener("click", () => {
+const addBook = document.getElementById("add-book");
+addBook.addEventListener("click", () => {
   document.getElementById("myForm").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
 });
 
 //Arrow function to hide the form and call addBookToLibrary()
-const addBook = document.getElementById("add-book");
-addBook.addEventListener("click", () => {
+const submitBtn = document.getElementById("submit-button");
+submitBtn.addEventListener("click", () => {
   document.getElementById("myForm").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
   addBookToLibrary();
 });
 
@@ -59,7 +50,9 @@ function displayLibraryInHTML() {
 function createBookMarkup(book) {
   //Creates the HTML structure for each new Book
   const markup = `<div class="books">
-                    <div class="book-info"> ${book.info()} </div>
+                    <div class="book-info"> ${book.title} </div>
+                    <div class="book-info"> ${book.author} </div>
+                    <div class="book-info"> ${book.pages} </div>
                     <div class="buttons">
                       <button type="submit" class="remove-button" 
                         onclick="removeBook(${book.index})">Remove</button>
@@ -95,9 +88,9 @@ function toggleRead(index, read) {
   });
   if (read === false) {
     readButton.textContent = "Not Read";
-    readButton.style.backgroundColor = "#e04f63";
+    readButton.style.backgroundColor = "#ffedd5";
   } else {
     readButton.textContent = "Read";
-    readButton.style.backgroundColor = "#63da63";
+    readButton.style.backgroundColor = "#fdba74";
   }
 }
