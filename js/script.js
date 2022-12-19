@@ -6,7 +6,7 @@ function Book(title, author, pages, read) {
   this.title = form.title.value;
   this.author = form.author.value;
   this.pages = form.pages.value + "pg";
-  this.read = form.read.value;
+  this.read = form.read.checked;
   this.info = function () {
     return (
       this.title +
@@ -15,19 +15,19 @@ function Book(title, author, pages, read) {
       ", " +
       this.pages +
       " pages, " +
-      (this.read === "read" ? this.read : this.read + " yet")
+      (this.read === "read" ? this.read : " not read yet")
     );
   };
 }
 
 //Arrow function to display the form
-let newBook = document.getElementById("new-book");
+const newBook = document.getElementById("new-book");
 newBook.addEventListener("click", () => {
   document.getElementById("myForm").style.display = "block";
 });
 
 //Arrow function to hide the form and call addBookToLibrary()
-let addBook = document.getElementById("add-book");
+const addBook = document.getElementById("add-book");
 addBook.addEventListener("click", () => {
   document.getElementById("myForm").style.display = "none";
   addBookToLibrary();
@@ -35,7 +35,7 @@ addBook.addEventListener("click", () => {
 
 function addBookToLibrary() {
   //Creates new Book, make a push to myLibrary and call displayLibraryInHTML()
-  let book = new Book(title, author, pages, read);
+  const book = new Book(title, author, pages, read);
   myLibrary.push(book);
   bookIndex = myLibrary.length - 1;
   book.index = bookIndex; //Adds propertie to know the book index in myLibrary
@@ -43,34 +43,37 @@ function addBookToLibrary() {
 }
 
 function displayLibraryInHTML() {
-  //Displays library in HTML and call addRemoveButtonEvent
+  //Displays library in HTML
   myLibrary.forEach((book) => {
     if (book.inLibrary !== true) {
-      let newBook = createBookMarkup(book);
+      const newBook = createBookMarkup(book);
       document //Inserts the newBook in the HTML
         .getElementById("library")
         .insertAdjacentHTML("beforeend", newBook);
       book.inLibrary = true; //Adds propertie to know that the book is now in myLibrary
+      toggleRead(book.index, book.read);
     }
   });
 }
 
 function createBookMarkup(book) {
   //Creates the HTML structure for each new Book
-  let markup = `<div class="books">
-                  <div class="book-info"> ${book.info()} </div>
-                  <div class="buttons">
-                    <button type="submit" class="remove-button" onclick="removeBook(${
-                      book.index
-                    })">Remove</button>
-                    <button type="submit" class="read-button">Read</button>
-                  </div>
-                </div>`;
+  const markup = `<div class="books">
+                    <div class="book-info"> ${book.info()} </div>
+                    <div class="buttons">
+                      <button type="submit" class="remove-button" 
+                        onclick="removeBook(${book.index})">Remove</button>
+                      <button type="submit" class="read-button"
+                        onclick="toggleRead(${book.index}, ${book.read})">Read
+                      </button>
+                    </div>
+                  </div>`;
   return markup;
 }
 
 function removeBook(indexOfBook) {
-  let library = document.getElementById("library");
+  //Removes selected book of myLibrary[] and HTML content, updates all book indexes
+  const library = document.getElementById("library");
   while (library.firstChild) {
     library.removeChild(library.firstChild);
   }
@@ -80,4 +83,21 @@ function removeBook(indexOfBook) {
     book.inLibrary = false;
   });
   displayLibraryInHTML();
+}
+
+function toggleRead(index, read) {
+  //Toggles read button and value
+  const library = document.getElementById("library");
+  const currentBook = library.children[index];
+  const readButton = currentBook.querySelector(".read-button");
+  readButton.addEventListener("click", () => {
+    toggleRead(index, !read);
+  });
+  if (read === false) {
+    readButton.textContent = "Not Read";
+    readButton.style.backgroundColor = "#e04f63";
+  } else {
+    readButton.textContent = "Read";
+    readButton.style.backgroundColor = "#63da63";
+  }
 }
