@@ -1,12 +1,13 @@
 let myLibrary = []; //Array to store all books
 let bookIndex = 0; //Global variable to differentiate books in library by index
 
-function Book(title, author, pages, read) {
-  //Book object constructor
-  this.title = form.title.value;
-  this.author = "by " + form.author.value;
-  this.pages = form.pages.value + " pages";
-  this.read = form.read.checked;
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = form.title.value;
+    this.author = "by " + form.author.value;
+    this.pages = form.pages.value + " pages";
+    this.read = form.read.checked;
+  }
 }
 
 //Arrow function to display the form
